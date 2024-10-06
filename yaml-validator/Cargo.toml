@@ -10,7 +10,7 @@ license = "MIT"
 keywords = ["YAML", "validation", "schema"]
 
 [dependencies]
-yaml-rust = { version = "0.8", package = "yaml-rust2" }
+yaml-rust = { version = "0.9", package = "yaml-rust2" }
 thiserror = "1.0.58"
 regex = { "version" = "1.10.4", optional = true }
 smallvec = { "version" = "1.13.2", optional = true }
