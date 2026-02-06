@@ -45,8 +45,8 @@ impl<'yaml, 'schema: 'yaml> Validate<'yaml, 'schema> for SchemaAllOf<'schema> {
             &mut self
                 .items
                 .iter()
-                .enumerate()
-                .map(|(_, schema)| schema.validate(ctx, yaml))
+                
+                .map(|schema| schema.validate(ctx, yaml))
                 .filter(Result::is_err),
         )?;
         Ok(())
