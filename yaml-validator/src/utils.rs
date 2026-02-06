@@ -3,7 +3,7 @@ use std::convert::TryInto;
 use std::fmt::{Debug, Display};
 use std::ops::{Index, Sub};
 
-use yaml_rust::{yaml::Hash, Yaml};
+use yaml_rust::{Yaml, yaml::Hash};
 
 pub trait UnitValue: Sub + Copy + PartialOrd + Default + Display {
     const ZERO: Self;

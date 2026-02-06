@@ -1,6 +1,6 @@
 use crate::errors::{SchemaError, SchemaErrorKind};
 use crate::errors::{ValidationError, ValidationErrorKind};
-use crate::utils::{try_into_usize, CondenseErrors, OptionalLookup, YamlUtils};
+use crate::utils::{CondenseErrors, OptionalLookup, YamlUtils, try_into_usize};
 use crate::{Context, PropertyType, Validate};
 use std::collections::HashSet;
 use std::convert::TryFrom;
@@ -56,12 +56,13 @@ impl<'schema> TryFrom<&'schema Yaml> for SchemaArray<'schema> {
             .unwrap_or(false);
 
         if let (Some(min_items), Some(max_items)) = (min_items, max_items)
-            && min_items > max_items {
-                return Err(SchemaErrorKind::MalformedField {
-                    error: "minItems cannot be greater than maxItems".into(),
-                }
-                .into());
+            && min_items > max_items
+        {
+            return Err(SchemaErrorKind::MalformedField {
+                error: "minItems cannot be greater than maxItems".into(),
             }
+            .into());
+        }
 
         let items = yaml
             .lookup("items", "yaml", Option::from)
@@ -141,20 +142,22 @@ impl<'yaml, 'schema: 'yaml> Validate<'yaml, 'schema> for SchemaArray<'schema> {
         let items = yaml.as_type("array", Yaml::as_vec)?;
 
         if let Some(min_items) = &self.min_items
-            && items.len() < *min_items {
-                return Err(ValidationErrorKind::ValidationError {
-                    error: "array contains fewer than minItems items",
-                }
-                .into());
+            && items.len() < *min_items
+        {
+            return Err(ValidationErrorKind::ValidationError {
+                error: "array contains fewer than minItems items",
             }
+            .into());
+        }
 
         if let Some(max_items) = &self.max_items
-            && items.len() > *max_items {
-                return Err(ValidationErrorKind::ValidationError {
-                    error: "array contains more than maxItems items",
-                }
-                .into());
+            && items.len() > *max_items
+        {
+            return Err(ValidationErrorKind::ValidationError {
+                error: "array contains more than maxItems items",
             }
+            .into());
+        }
 
         if self.unique_items {
             let mut set = HashSet::new();
@@ -198,12 +201,13 @@ impl<'yaml, 'schema: 'yaml> Validate<'yaml, 'schema> for SchemaArray<'schema> {
             }
 
             if let Some(max) = self.max_contains
-                && contained > max {
-                    return Err(ValidationErrorKind::ValidationError {
-                        error: "more than minContains items validated against schema in 'contains'",
-                    }
-                    .into());
+                && contained > max
+            {
+                return Err(ValidationErrorKind::ValidationError {
+                    error: "more than minContains items validated against schema in 'contains'",
                 }
+                .into());
+            }
         };
 
         if let Some(schema) = &self.items {
@@ -223,8 +227,8 @@ impl<'yaml, 'schema: 'yaml> Validate<'yaml, 'schema> for SchemaArray<'schema> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::utils::load_simple;
     use crate::SchemaArray;
+    use crate::utils::load_simple;
 
     #[test]
     fn from_yaml() {

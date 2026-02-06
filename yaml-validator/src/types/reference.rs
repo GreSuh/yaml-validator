@@ -24,8 +24,8 @@ impl<'yaml, 'schema: 'yaml> Validate<'yaml, 'schema> for SchemaReference<'schema
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::utils::load_simple;
     use crate::SchemaReference;
+    use crate::utils::load_simple;
 
     #[test]
     fn validate_string() {

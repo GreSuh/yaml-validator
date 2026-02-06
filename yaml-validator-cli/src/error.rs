@@ -1,4 +1,4 @@
-use yaml_validator::{yaml_rust::ScanError, SchemaError};
+use yaml_validator::{SchemaError, yaml_rust::ScanError};
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum Error {

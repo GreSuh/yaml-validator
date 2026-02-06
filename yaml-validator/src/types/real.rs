@@ -68,12 +68,13 @@ impl<'schema> TryFrom<&'schema Yaml> for SchemaReal {
             .into_optional()?;
 
         if let (Some(lower), Some(upper)) = (&minimum, &maximum)
-            && !lower.has_span(upper) {
-                return Err(SchemaErrorKind::MalformedField {
-                    error: "range given for real value spans 0 possible values".into(),
-                }
-                .into());
+            && !lower.has_span(upper)
+        {
+            return Err(SchemaErrorKind::MalformedField {
+                error: "range given for real value spans 0 possible values".into(),
             }
+            .into());
+        }
 
         Ok(SchemaReal {
             minimum,
@@ -92,28 +93,31 @@ impl<'yaml, 'schema: 'yaml> Validate<'yaml, 'schema> for SchemaReal {
         let value = yaml.as_type("real", Yaml::as_f64)?;
 
         if let Some(minimum) = &self.minimum
-            && !minimum.is_greater(&value) {
-                return Err(ValidationErrorKind::ValidationError {
-                    error: "value violates lower limit constraint",
-                }
-                .into());
+            && !minimum.is_greater(&value)
+        {
+            return Err(ValidationErrorKind::ValidationError {
+                error: "value violates lower limit constraint",
             }
+            .into());
+        }
 
         if let Some(maximum) = &self.maximum
-            && !maximum.is_lesser(&value) {
-                return Err(ValidationErrorKind::ValidationError {
-                    error: "value violates upper limit constraint",
-                }
-                .into());
+            && !maximum.is_lesser(&value)
+        {
+            return Err(ValidationErrorKind::ValidationError {
+                error: "value violates upper limit constraint",
             }
+            .into());
+        }
 
         if let Some(multiple_of) = &self.multiple_of
-            && value.rem_euclid(*multiple_of) != 0.0 {
-                return Err(ValidationErrorKind::ValidationError {
-                    error: "value must be a multiple of the multipleOf field",
-                }
-                .into());
+            && value.rem_euclid(*multiple_of) != 0.0
+        {
+            return Err(ValidationErrorKind::ValidationError {
+                error: "value must be a multiple of the multipleOf field",
             }
+            .into());
+        }
 
         Ok(())
     }
@@ -122,8 +126,8 @@ impl<'yaml, 'schema: 'yaml> Validate<'yaml, 'schema> for SchemaReal {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::utils::load_simple;
     use crate::SchemaErrorKind;
+    use crate::utils::load_simple;
 
     #[test]
     fn from_yaml() {

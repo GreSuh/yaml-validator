@@ -30,10 +30,10 @@ impl<'yaml, 'schema: 'yaml> Validate<'yaml, 'schema> for SchemaBool {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::SchemaString;
     use crate::errors::{SchemaErrorKind, ValidationErrorKind};
     use crate::types::SchemaInteger;
     use crate::utils::load_simple;
-    use crate::SchemaString;
 
     #[test]
     fn from_yaml() {

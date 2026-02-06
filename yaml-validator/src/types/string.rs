@@ -1,6 +1,6 @@
 use crate::errors::{SchemaError, SchemaErrorKind};
 use crate::errors::{ValidationError, ValidationErrorKind};
-use crate::utils::{try_into_usize, OptionalLookup, YamlUtils};
+use crate::utils::{OptionalLookup, YamlUtils, try_into_usize};
 use crate::{Context, Validate};
 use std::convert::TryFrom;
 use yaml_rust::Yaml;
@@ -41,12 +41,13 @@ impl<'schema> TryFrom<&'schema Yaml> for SchemaString {
             .into_optional()?;
 
         if let (Some(min_length), Some(max_length)) = (min_length, max_length)
-            && min_length > max_length {
-                return Err(SchemaErrorKind::MalformedField {
-                    error: "minLength cannot be greater than maxLength".into(),
-                }
-                .into());
+            && min_length > max_length
+        {
+            return Err(SchemaErrorKind::MalformedField {
+                error: "minLength cannot be greater than maxLength".into(),
             }
+            .into());
+        }
 
         #[cfg(feature = "regex")]
         {
@@ -88,30 +89,33 @@ impl<'yaml, 'schema: 'yaml> Validate<'yaml, 'schema> for SchemaString {
         let value = yaml.as_type("string", Yaml::as_str)?;
 
         if let Some(min_length) = self.min_length
-            && value.len() < min_length {
-                return Err(ValidationErrorKind::ValidationError {
-                    error: "string length is less than minLength",
-                }
-                .into());
+            && value.len() < min_length
+        {
+            return Err(ValidationErrorKind::ValidationError {
+                error: "string length is less than minLength",
             }
+            .into());
+        }
 
         if let Some(max_length) = self.max_length
-            && value.len() > max_length {
-                return Err(ValidationErrorKind::ValidationError {
-                    error: "string length is greater than maxLength",
-                }
-                .into());
+            && value.len() > max_length
+        {
+            return Err(ValidationErrorKind::ValidationError {
+                error: "string length is greater than maxLength",
             }
+            .into());
+        }
 
         #[cfg(feature = "regex")]
         {
             if let Some(regex) = &self.pattern
-                && !regex.is_match(value) {
-                    return Err(ValidationErrorKind::ValidationError {
-                        error: "supplied value does not match regex pattern for field",
-                    }
-                    .into());
+                && !regex.is_match(value)
+            {
+                return Err(ValidationErrorKind::ValidationError {
+                    error: "supplied value does not match regex pattern for field",
                 }
+                .into());
+            }
         }
 
         Ok(())
@@ -121,9 +125,9 @@ impl<'yaml, 'schema: 'yaml> Validate<'yaml, 'schema> for SchemaString {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::SchemaString;
     use crate::errors::SchemaErrorKind;
     use crate::utils::load_simple;
-    use crate::SchemaString;
 
     #[test]
     fn from_yaml() {

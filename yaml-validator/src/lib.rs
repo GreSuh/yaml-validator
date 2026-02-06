@@ -13,8 +13,8 @@ mod utils;
 use modifiers::*;
 use types::*;
 
-pub use errors::schema::{SchemaError, SchemaErrorKind};
 use errors::ValidationError;
+pub use errors::schema::{SchemaError, SchemaErrorKind};
 
 use crate::types::bool::SchemaBool;
 use utils::{CondenseErrors, OptionalLookup, YamlUtils};
@@ -220,8 +220,8 @@ impl<'yaml, 'schema: 'yaml> Validate<'yaml, 'schema> for Schema<'schema> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::utils::load_simple;
     use crate::Context;
+    use crate::utils::load_simple;
     use yaml_rust::YamlLoader;
 
     #[test]

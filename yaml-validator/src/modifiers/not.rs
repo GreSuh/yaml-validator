@@ -51,7 +51,7 @@ impl<'yaml, 'schema: 'yaml> Validate<'yaml, 'schema> for SchemaNot<'schema> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{utils::load_simple, SchemaErrorKind};
+    use crate::{SchemaErrorKind, utils::load_simple};
 
     #[test]
     fn not_from_yaml() {

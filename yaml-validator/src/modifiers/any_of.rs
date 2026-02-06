@@ -44,7 +44,6 @@ impl<'yaml, 'schema: 'yaml> Validate<'yaml, 'schema> for SchemaAnyOf<'schema> {
         let (valid, errs): (Vec<_>, Vec<_>) = self
             .items
             .iter()
-            
             .map(|schema| schema.validate(ctx, yaml))
             .partition(Result::is_ok);
 

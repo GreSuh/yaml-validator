@@ -4,8 +4,8 @@ use std::path::Path;
 use std::path::PathBuf;
 use structopt::StructOpt;
 use yaml_validator::{
-    yaml_rust::{Yaml, YamlLoader},
     Context, Validate,
+    yaml_rust::{Yaml, YamlLoader},
 };
 
 mod error;
