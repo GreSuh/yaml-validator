@@ -105,7 +105,7 @@ pub trait YamlUtils {
         &'schema self,
         required: &[&'schema str],
         optional: &[&'schema str],
-    ) -> Result<&Hash, GenericError<'schema>>;
+    ) -> Result<&'schema Hash, GenericError<'schema>>;
 
     fn check_exclusive_fields<'schema>(
         &'schema self,
@@ -159,7 +159,7 @@ impl YamlUtils for Yaml {
         &'schema self,
         required: &[&'schema str],
         optional: &[&'schema str],
-    ) -> Result<&Hash, GenericError<'schema>> {
+    ) -> Result<&'schema Hash, GenericError<'schema>> {
         let hash = self.as_type("hash", Yaml::as_hash)?;
 
         let missing = required
