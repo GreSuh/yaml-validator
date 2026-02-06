@@ -12,7 +12,7 @@ pub trait UnitValue: Sub + Copy + PartialOrd + Default + Display {
 
 impl UnitValue for f64 {
     const ZERO: f64 = 0.0;
-    const UNIT: f64 = std::f64::MIN_POSITIVE;
+    const UNIT: f64 = f64::MIN_POSITIVE;
 }
 
 impl UnitValue for i64 {
