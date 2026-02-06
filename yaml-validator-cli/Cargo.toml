@@ -1,14 +1,14 @@
 [package]
 name = "yaml-validator-cli"
 version = "0.1.1"
-authors = ["Mathias Pius <contact@pius.io>"]
-edition = "2018"
+authors = ["Mathias Pius <contact@pius.io>", "Gregor Suhr <gregor@it-babel.net>"]
+edition = "2024"
 description = "A command-line interface to the yaml-validator library"
-repository = "https://github.com/MathiasPius/yaml-validator"
+repository = "https://github.com/GreSuh/yaml-validator/"
 readme = "../README.md"
 license = "MIT"
 keywords = ["YAML", "validation", "schema"]
 
 [dependencies]
-yaml-validator = { "path" = "../yaml-validator", version = "0.2.0" }
+yaml-validator = { "path" = "../yaml-validator", version = "0.2.1" }
 structopt = "0.3.26"

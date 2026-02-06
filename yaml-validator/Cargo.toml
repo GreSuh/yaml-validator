@@ -1,18 +1,18 @@
 [package]
 name = "yaml-validator"
-version = "0.2.0"
-authors = ["Mathias Pius <contact@pius.io>"]
-edition = "2018"
+version = "0.2.1"
+authors = ["Mathias Pius <contact@pius.io>", "Gregor Suhr <gregor@it-babel.net"]
+edition = "2024"
 description = "A library for validating YAML against YAML-defined schemas"
-repository = "https://github.com/MathiasPius/yaml-validator"
+repository = "https://github.com/GreSuh/yaml-validator/"
 readme = "README.md"
 license = "MIT"
 keywords = ["YAML", "validation", "schema"]
 
 [dependencies]
-yaml-rust = { version = "0.10", package = "yaml-rust2" }
-thiserror = "2.0.12"
-regex = { "version" = "1.11.1", optional = true }
+yaml-rust = { version = "0.11.0", package = "yaml-rust2" }
+thiserror = "2.0.18"
+regex = { "version" = "1.12.3", optional = true }
 smallvec = { "version" = "1.14.0", optional = true }
 
 [features]
