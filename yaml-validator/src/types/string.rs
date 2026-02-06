@@ -40,14 +40,13 @@ impl<'schema> TryFrom<&'schema Yaml> for SchemaString {
             .map_err(SchemaError::add_path_name("maxLength"))
             .into_optional()?;
 
-        if let (Some(min_length), Some(max_length)) = (min_length, max_length) {
-            if min_length > max_length {
+        if let (Some(min_length), Some(max_length)) = (min_length, max_length)
+            && min_length > max_length {
                 return Err(SchemaErrorKind::MalformedField {
                     error: "minLength cannot be greater than maxLength".into(),
                 }
                 .into());
             }
-        }
 
         #[cfg(feature = "regex")]
         {
@@ -88,34 +87,31 @@ impl<'yaml, 'schema: 'yaml> Validate<'yaml, 'schema> for SchemaString {
     ) -> Result<(), ValidationError<'yaml>> {
         let value = yaml.as_type("string", Yaml::as_str)?;
 
-        if let Some(min_length) = self.min_length {
-            if value.len() < min_length {
+        if let Some(min_length) = self.min_length
+            && value.len() < min_length {
                 return Err(ValidationErrorKind::ValidationError {
                     error: "string length is less than minLength",
                 }
                 .into());
             }
-        }
 
-        if let Some(max_length) = self.max_length {
-            if value.len() > max_length {
+        if let Some(max_length) = self.max_length
+            && value.len() > max_length {
                 return Err(ValidationErrorKind::ValidationError {
                     error: "string length is greater than maxLength",
                 }
                 .into());
             }
-        }
 
         #[cfg(feature = "regex")]
         {
-            if let Some(regex) = &self.pattern {
-                if !regex.is_match(value) {
+            if let Some(regex) = &self.pattern
+                && !regex.is_match(value) {
                     return Err(ValidationErrorKind::ValidationError {
                         error: "supplied value does not match regex pattern for field",
                     }
                     .into());
                 }
-            }
         }
 
         Ok(())

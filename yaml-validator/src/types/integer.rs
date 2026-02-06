@@ -52,14 +52,13 @@ impl<'schema> TryFrom<&'schema Yaml> for SchemaInteger {
                 .map(Limit::Exclusive)
                 .into_optional()?);
 
-        if let (Some(lower), Some(upper)) = (&minimum, &maximum) {
-            if !lower.has_span(upper) {
+        if let (Some(lower), Some(upper)) = (&minimum, &maximum)
+            && !lower.has_span(upper) {
                 return Err(SchemaErrorKind::MalformedField {
                     error: "range given for real value spans 0 possible values".into(),
                 }
                 .into());
             }
-        }
 
         let multiple_of = yaml
             .lookup("multipleOf", "integer", Yaml::as_i64)
@@ -92,32 +91,29 @@ impl<'yaml, 'schema: 'yaml> Validate<'yaml, 'schema> for SchemaInteger {
     ) -> Result<(), ValidationError<'yaml>> {
         let value = yaml.as_type("integer", Yaml::as_i64)?;
 
-        if let Some(minimum) = &self.minimum {
-            if !minimum.is_greater(&value) {
+        if let Some(minimum) = &self.minimum
+            && !minimum.is_greater(&value) {
                 return Err(ValidationErrorKind::ValidationError {
                     error: "value violates lower limit constraint",
                 }
                 .into());
             }
-        }
 
-        if let Some(maximum) = &self.maximum {
-            if !maximum.is_lesser(&value) {
+        if let Some(maximum) = &self.maximum
+            && !maximum.is_lesser(&value) {
                 return Err(ValidationErrorKind::ValidationError {
                     error: "value violates upper limit constraint",
                 }
                 .into());
             }
-        }
 
-        if let Some(multiple_of) = &self.multiple_of {
-            if value.rem_euclid(*multiple_of) != 0 {
+        if let Some(multiple_of) = &self.multiple_of
+            && value.rem_euclid(*multiple_of) != 0 {
                 return Err(ValidationErrorKind::ValidationError {
                     error: "value must be a multiple of the multipleOf field",
                 }
                 .into());
             }
-        }
 
         Ok(())
     }
